@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  - Guidance Magento Team <magento@guidance.com>
+  - Copyright (c) 2018 Guidance Solutions (http://www.guidance.com)
+  -->
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Guidance_WebapiLogging::rest_api_log" title="REST API" translate="title" module="Guidance_WebapiLogging"
+             sortOrder="30" parent="Magento_Logging::system_magento_logging" action="adminhtml/webapilog"
+             dependsOnModule="Guidance_WebapiLogging" resource="Magento_Backend::system"/>
+    </menu>
+</config>

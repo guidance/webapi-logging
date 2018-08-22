@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  - Guidance Magento Team <magento@guidance.com>
+  - Copyright (c) 2018 Guidance Solutions (http://www.guidance.com)
+  -->
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\WebapiLogging\Controller\Rest">
+        <plugin name="logger" type="Guidance\WebapiLogging\Plugin\Controller\Logger"/>
+    </type>
+    <type name="Guidance\WebapiLogging\Plugin\Controller\Logger">
+        <arguments>
+            <argument name="logger" xsi:type="object">httpLogger</argument>
+            <argument name="requestFilter" xsi:type="object">Guidance\WebapiLogging\Model\RegExpRequestFilter</argument>
+        </arguments>
+    </type>
+    <virtualType name="httpLogger" type="Monolog\Logger">
+        <arguments>
+            <argument name="name" xsi:type="string">main</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="0" xsi:type="object">Guidance\WebapiLogging\Model\Logger\FileHandler</item>
+                <item name="1" xsi:type="object">Guidance\WebapiLogging\Model\Logger\DbHandler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <type name="Guidance\WebapiLogging\Model\RegExpRequestFilter">
+        <arguments>
+            <argument name="mode" xsi:type="const">Guidance\WebapiLogging\Model\RegExpRequestFilter::MODE_WHITELIST</argument>
+            <argument name="filterRegExps" xsi:type="array">
+                <item name="only-dev" xsi:type="string">|Host\: foo\.bar\.guidevops\.com|</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Guidance\WebapiLogging\Model\Logger\FileHandler">
+        <arguments>
+            <argument name="formatter" xsi:type="object">requestFileFormatter</argument>
+        </arguments>
+    </type>
+    <type name="Guidance\WebapiLogging\Model\Logger\DbHandler">
+        <arguments>
+            <argument name="formatter" xsi:type="object">Guidance\WebapiLogging\Model\Formatter\PrivateDataFilter</argument>
+        </arguments>
+    </type>
+    <virtualType name="lineFormatterWithBreaks" type="Monolog\Formatter\LineFormatter">
+        <arguments>
+            <argument name="allowInlineLineBreaks" xsi:type="boolean">true</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="requestFileFormatter" type="Guidance\WebapiLogging\Model\Formatter\Chain">
+        <arguments>
+            <argument name="formatters" xsi:type="array">
+                <item name="private" xsi:type="object">Guidance\WebapiLogging\Model\Formatter\PrivateDataFilter</item>
+                <item name="request" xsi:type="object">Guidance\WebapiLogging\Model\Formatter\RequestFileFormatter</item>
+                <item name="line" xsi:type="object">lineFormatterWithBreaks</item>
+            </argument>
+        </arguments>
+    </virtualType>
+</config>

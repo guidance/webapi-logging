@@ -1,0 +1,17 @@
+{
+    "name": "guidance/module-webapi-logging",
+    "description": "Flexible logging of REST API requests",
+    "type": "magento2-module",
+    "version": "1.0.0",
+    "require": {
+        "php": "^7"
+    },
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "Guidance\\WebapiLogging\\": ""
+        }
+    }
+}

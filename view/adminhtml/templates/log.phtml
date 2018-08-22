@@ -1,0 +1,60 @@
+<?php
+/**
+ * @author      Guidance Magento Team <magento@guidance.com>
+ * @category
+ * @package
+ * @copyright   Copyright (c) 2018 Guidance Solutions (http://www.guidance.com)
+ */
+/* @var \Guidance\WebapiLogging\Adminhtml\Log $block */
+$log = $block->getLog();
+?>
+<style type="text/css">
+    dl.webapiLogging-log pre {
+        font-size: 90%;
+    }
+    dl.webapi-log dt {
+        font-weight: bold;
+    }
+</style>
+<dl class="webapi-log">
+    <dt>
+        <?= __('Date') ?>
+    </dt>
+    <dd>
+        <?= $block->escapeHtml($log->getCreatedAt()) ?>
+    </dd>
+    <dt>
+        <?= __('Request') ?>
+    </dt>
+    <dd>
+        <pre class="json-editor-blackbord"><?= $block->formatHeader($log->getRequestHeader()) ?></pre>
+        <?php if ($log->isRequestBodyJson()): ?>
+            <div id="request-body"></div>
+            <script type="text/javascript">
+                require(['jquery', 'jsonEditor'], function(jQuery) {
+                    var requestBody = <?= $log->getRequestBody() ?>;
+                    new JsonEditor(jQuery('#request-body'), requestBody, {editable: false});
+                });
+            </script>
+        <?php else: ?>
+            <pre class="json-editor-blackbord"><?= $block->escapeHtml($log->getRequestBody()) ?></pre>
+        <?php endif; ?>
+    </dd>
+    <dt>
+        <?= __('Response') ?>
+    </dt>
+    <dd>
+        <pre class="json-editor-blackbord"><?= $block->formatHeader($log->getResponseHeader()) ?></pre>
+        <?php if ($log->isResponseBodyJson()): ?>
+            <div id="response-body"></div>
+            <script type="text/javascript">
+                require(['jquery', 'jsonEditor'], function(jQuery) {
+                    var responseBody = <?= $log->getResponseBody() ?>;
+                    new JsonEditor(jQuery('#response-body'), responseBody, {editable: false});
+                });
+            </script>
+        <?php else: ?>
+            <pre class="json-editor-blackbord"><?= $block->escapeHtml($log->getResponseBody()) ?><
+        <?php endif; ?>
+    </dd>
+</dl>
