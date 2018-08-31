@@ -47,7 +47,7 @@ class RegExpRequestFilter implements RequestFilterInterface
             return false;
         }
         if (!empty($this->blacklist)) {
-            foreach ($this->whitelist as $filter) {
+            foreach ($this->blacklist as $filter) {
                 if (preg_match($filter, $subject)) {
                     return false;
                 }
