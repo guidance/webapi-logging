@@ -13,15 +13,14 @@ class PrivateDataFilter implements FormatterInterface
 {
     use SimpleBatch;
 
-    const MASK = '****';
+    protected $mask;
+    protected $maskPatterns = [];
 
-    protected $maskPatterns = [
-        '/"password"\s*\:\s*"([^"]*)"/',    // integration token password
-        '/"(\w{32})"/',                     // auth token
-        '/"(\d{12})\d{4}"/',                // credit card number
-        '/"cc_cid"\s*\:\s*"(\d+)"/',        // cvv
-        '/Authorization\: Bearer (\w+)/',   // api key mask
-    ];
+    public function __construct(array $maskPatterns, string $mask = '****')
+    {
+        $this->maskPatterns = $maskPatterns;
+        $this->mask = $mask;
+    }
 
     /**
      * Formats a log record.
@@ -33,7 +32,7 @@ class PrivateDataFilter implements FormatterInterface
     {
         return preg_replace_callback($this->maskPatterns, function ($matches) {
             return isset($matches[1])
-                ? str_replace($matches[1], self::MASK, $matches[0])
+                ? str_replace($matches[1], $this->mask, $matches[0])
                 : self::MASK;
         }, $record['message']);
     }

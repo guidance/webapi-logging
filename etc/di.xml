@@ -39,6 +39,20 @@
             -->
         </arguments>
     </type>
+    <type name="Guidance\WebapiLogging\Model\Formatter\PrivateDataFilter">
+        <arguments>
+            <!--
+                List of regular expressions for masking. Please don't miss / characters.
+            -->
+            <argument name="maskPatterns" xsi:type="array">
+                <item name="integration token password" xsi:type="string">/"password"\s*\:\s*"([^"]*)"/</item>
+                <item name="auth token" xsi:type="string">/"(\w{32})"/</item>
+                <item name="credit card number" xsi:type="string">/"(\d{12})\d{4}"/</item>
+                <item name="cvv" xsi:type="string">/"cc_cid"\s*\:\s*"(\d+)"/</item>
+                <item name="api key mask" xsi:type="string">/Authorization\: Bearer (\w+)/</item>
+            </argument>
+        </arguments>
+    </type>
     <type name="Guidance\WebapiLogging\Model\Logger\FileHandler">
         <arguments>
             <argument name="formatter" xsi:type="object">requestFileFormatter</argument>
