@@ -8,7 +8,7 @@ It supports filtering of private data and what should be logged or not with regu
 The easiest way to install is to use Composer:
 
 ```
-composer config repositories.webapi vcs https://github.com/guidance/webapi-logging
+composer config repositories.guidance composer https://repo.guidance.com/
 composer require guidance/module-webapi-logging
 ```
 
@@ -17,7 +17,7 @@ composer require guidance/module-webapi-logging
 Almost all module configuration is situated in `etc/di.xml` file. 
 
 The module can write logs to `webapi_log` table and to `var/log/webapi.log` file depends 
-on logger handlers configuration of virtual type `httpLogger.` By default it logs to file and 
+on logger handlers configuration of virtual type `fileDbLogger.` By default it logs to file and 
 to database. Logs in `webapi_log` table are cleaned each night in 3am (it can be configured in 
 `etc/crontab.xml`). Log entries older than 30 days will be cleaned (it can be configured in 
 admin panel _Stores > Configuration > System > REST API Log Cleaning)._

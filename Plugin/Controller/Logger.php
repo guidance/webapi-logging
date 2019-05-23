@@ -9,7 +9,7 @@ namespace Guidance\WebapiLogging\Plugin\Controller;
 
 use Guidance\WebapiLogging\Api\RequestFilterInterface;
 use Magento\Framework\App;
-use Magento\Framework\WebapiLogging;
+use Magento\Framework\Webapi;
 use Psr\Log\LoggerInterface;
 
 class Logger
@@ -23,7 +23,7 @@ class Logger
     protected $shouldLog = true;
     protected $sessionId;
 
-    public function __construct(WebapiLogging\Request $request, LoggerInterface $logger, RequestFilterInterface $requestFilter = null)
+    public function __construct(Webapi\Request $request, LoggerInterface $logger, RequestFilterInterface $requestFilter = null)
     {
         $this->logger = $logger;
         $this->request = $request;
@@ -38,7 +38,7 @@ class Logger
         }
     }
 
-    public function afterDispatch(App\FrontControllerInterface $controller, WebapiLogging\Response $response)
+    public function afterDispatch(App\FrontControllerInterface $controller, Webapi\Response $response)
     {
         if ($this->shouldLog) {
             if ($response instanceof WebapiLogging\Rest\Response && $response->isException()) {

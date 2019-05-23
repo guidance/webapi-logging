@@ -5,16 +5,20 @@
   -->
 
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
-    <type name="Magento\WebapiLogging\Controller\Rest">
+    <type name="Magento\Webapi\Controller\Rest">
         <plugin name="logger" type="Guidance\WebapiLogging\Plugin\Controller\Logger"/>
     </type>
     <type name="Guidance\WebapiLogging\Plugin\Controller\Logger">
         <arguments>
-            <argument name="logger" xsi:type="object">httpLogger</argument>
+            <argument name="logger" xsi:type="object">fileDbLogger</argument>
             <argument name="requestFilter" xsi:type="object">Guidance\WebapiLogging\Model\RegExpRequestFilter</argument>
         </arguments>
     </type>
-    <virtualType name="httpLogger" type="Monolog\Logger">
+    <!--
+        You can define similar virtual type for logger with requred handlers
+        and pass it to Guidance\WebapiLogging\Plugin\Controller\Logger $logger constructor argument.
+    -->
+    <virtualType name="fileDbLogger" type="Monolog\Logger">
         <arguments>
             <argument name="name" xsi:type="string">main</argument>
             <argument name="handlers"  xsi:type="array">
@@ -25,10 +29,14 @@
     </virtualType>
     <type name="Guidance\WebapiLogging\Model\RegExpRequestFilter">
         <arguments>
-            <argument name="mode" xsi:type="const">Guidance\WebapiLogging\Model\RegExpRequestFilter::MODE_WHITELIST</argument>
-            <argument name="filterRegExps" xsi:type="array">
-                <item name="only-dev" xsi:type="string">|Host\: foo\.bar\.guidevops\.com|</item>
-            </argument>
+            <argument name="mode" xsi:type="const">Guidance\WebapiLogging\Model\RegExpRequestFilter::MODE_BLACKLIST</argument>
+            <!--
+                Define exact filters in project specific DI with following argument:
+
+                <argument name="filterRegExps" xsi:type="array">
+                    <item name="only-dev" xsi:type="string">|Host\: foo\.bar\.guidevops\.com|</item>
+                </argument>
+            -->
         </arguments>
     </type>
     <type name="Guidance\WebapiLogging\Model\Logger\FileHandler">
