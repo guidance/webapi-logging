@@ -9,7 +9,7 @@
         <section id="system">
             <tab>advanced</tab>
             <group id="webapi_log" translate="label" showInDefault="1" showInWebsite="0" showInStore="0" sortOrder="550">
-                <label>REST API Log Cleaning</label>
+                <label>REST API Log</label>
                 <field id="lifetime" translate="label comment" type="text" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
                     <label>Log Entry Lifetime, Days</label>
                     <comment>If empty logs won't be cleaned.</comment>
