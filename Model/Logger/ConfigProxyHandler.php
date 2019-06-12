@@ -15,30 +15,27 @@ use Monolog\Handler\HandlerInterface;
 class ConfigProxyHandler implements HandlerInterface
 {
     protected $subject;
-    protected $configPath;
-    protected $config;
+    protected $enabled;
 
     public function __construct(HandlerInterface $subject, string $configPath, ScopeConfigInterface $config)
     {
         $this->subject = $subject;
-        $this->configPath = $configPath;
-        $this->config = $config;
+        $this->enabled = $config->isSetFlag($configPath);
     }
 
     public function isHandling(array $record)
     {
-        return $this->config->isSetFlag($this->configPath)
-            && $this->subject->isHandling($record);
+        return $this->enabled && $this->subject->isHandling($record);
     }
 
     public function handle(array $record)
     {
-        return $this->subject->handle($record);
+        return $this->enabled && $this->subject->handle($record);
     }
 
     public function handleBatch(array $records)
     {
-        return $this->subject->handleBatch($records);
+        return $this->enabled && $this->subject->handleBatch($records);
     }
 
     public function pushProcessor($callback)
