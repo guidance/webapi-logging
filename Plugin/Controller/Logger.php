@@ -41,7 +41,7 @@ class Logger
     public function afterDispatch(App\FrontControllerInterface $controller, Webapi\Response $response)
     {
         if ($this->shouldLog) {
-            if ($response instanceof WebapiLogging\Rest\Response && $response->isException()) {
+            if ($response instanceof Webapi\Rest\Response && $response->isException()) {
                 foreach ($response->getException() as $e) {
                     $this->logger->debug((string)$e, ['session' => $this->sessionId, 'type' => self::MESSAGE_RESPONSE]);
                 }
