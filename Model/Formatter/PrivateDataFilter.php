@@ -33,7 +33,7 @@ class PrivateDataFilter implements FormatterInterface
         return preg_replace_callback($this->maskPatterns, function ($matches) {
             return isset($matches[1])
                 ? str_replace($matches[1], $this->mask, $matches[0])
-                : self::MASK;
+                : $this->mask;
         }, $record['message']);
     }
 }
